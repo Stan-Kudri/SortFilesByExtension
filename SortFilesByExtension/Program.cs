@@ -13,16 +13,13 @@ namespace SortFilesByExtension
 
         static void Main(string[] args)
         {
-            string path = $@"X:\Фильмы";
-            if (Directory.Exists(path))
-            {
-                var sortBy = new SortByExtension();
-                sortBy.Sort(path);
-                sortBy.OutputSortedFiles();
-            }
-            else
-                Console.WriteLine("Используется не папка !");
+            string path = @"X:\Фильмы";
+            string expansion = "mkv";
 
+            var sortBy = new SortByExtension();
+            var creatingData = sortBy.CreatingDataSortedByFileSize(path,expansion);
+            sortBy.OutputSortedFiles(creatingData);
+            
             Console.ReadLine();
         }
     }

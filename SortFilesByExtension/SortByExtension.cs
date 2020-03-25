@@ -20,25 +20,53 @@ namespace SortFilesByExtension
     }
 
     class SortByExtension
-    {
-        private string[] SortedNames { get; set; }
-
-        public void Sort(string path)
+    {       
+        private void ThrowIfInvalidPath(string path)
         {
+            if (!Directory.Exists(path))
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private void ThrowIfNoData(string[] SortedNames)
+        {
+            if(SortedNames==null)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private string NormalizationExtensions(string expansion)
+        {
+            if (expansion.StartsWith("."))
+                return expansion;
+            else
+            {
+                return new StringBuilder("." + expansion).ToString();                
+            }
+        }
+
+        public string[] CreatingDataSortedByFileSize(string path,string expansion)
+        {
+            ThrowIfInvalidPath(path);
+            expansion = NormalizationExtensions(expansion);
+
             List<FileMetadata> fileMetadatas = new List<FileMetadata>();
 
-            foreach (var files in Directory.EnumerateFiles(path, "*.mkv"))
+            foreach (var files in Directory.EnumerateFiles(path, $"*{expansion}"))
             {
                 var fileInfo = new FileInfo(files);
                 fileMetadatas.Add(new FileMetadata(fileInfo.Name,fileInfo.Length));
                 Console.WriteLine($"{fileInfo.Name} => {fileInfo.Length}");
             }
 
-            SortedNames = fileMetadatas.OrderBy(x => x.Length).Select(x => x.Name).ToArray();                                  
+            return fileMetadatas.OrderBy(x => x.Length).Select(x => x.Name).ToArray();                                  
         }
 
-        public void OutputSortedFiles()
+        public void OutputSortedFiles(string[] SortedNames)
         {
+            ThrowIfNoData(SortedNames);
             Console.WriteLine("\nОтсортированные Элементы:");
             foreach (var files in SortedNames)
             {
