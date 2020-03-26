@@ -4,32 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using SortFilesByExtension;
 
-namespace SortFilesByExtension
-{
-    class FileMetadata
-    {
-        public string Name { get; }
-        public long Length { get; }
-
-        public FileMetadata(string name, long length)
-        {
-            Name = name;
-            Length = length;
-        }
-    }
-
-    class SortByExtension
+namespace FileHandler
+{    
+    class FileHandler
     {       
         private void ThrowIfInvalidPath(string path)
         {
             if (!Directory.Exists(path))
             {
-                throw new NotImplementedException();
+                throw new ArgumentException();
             }
         }
 
-        private void ThrowIfNoData(string[] SortedNames)
+        private void ThrowIfNull(string[] SortedNames)
         {
             if(SortedNames==null)
             {
@@ -37,7 +26,7 @@ namespace SortFilesByExtension
             }
         }
 
-        private string NormalizationExtensions(string expansion)
+        private string NormalizeExtension(string expansion)
         {
             if (expansion.StartsWith("."))
                 return expansion;
@@ -47,14 +36,13 @@ namespace SortFilesByExtension
             }
         }
 
-        public string[] CreatingDataSortedByFileSize(string path,string expansion)
+        public string[] CreatDataSortedByFileSize(string path,string extansion)
         {
             ThrowIfInvalidPath(path);
-            expansion = NormalizationExtensions(expansion);
 
             List<FileMetadata> fileMetadatas = new List<FileMetadata>();
 
-            foreach (var files in Directory.EnumerateFiles(path, $"*{expansion}"))
+            foreach (var files in Directory.EnumerateFiles(path, $"*{NormalizeExtension(extansion)}"))
             {
                 var fileInfo = new FileInfo(files);
                 fileMetadatas.Add(new FileMetadata(fileInfo.Name,fileInfo.Length));
@@ -64,9 +52,9 @@ namespace SortFilesByExtension
             return fileMetadatas.OrderBy(x => x.Length).Select(x => x.Name).ToArray();                                  
         }
 
-        public void OutputSortedFiles(string[] SortedNames)
+        public void Print(string[] SortedNames)
         {
-            ThrowIfNoData(SortedNames);
+            ThrowIfNull(SortedNames);
             Console.WriteLine("\nОтсортированные Элементы:");
             foreach (var files in SortedNames)
             {

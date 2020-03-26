@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace SortFilesByExtension
+namespace FileHandler
 {
     class Program
     {
@@ -14,11 +14,11 @@ namespace SortFilesByExtension
         static void Main(string[] args)
         {
             string path = @"X:\Фильмы";
-            string expansion = "mkv";
+            string extansion = "mkv";
 
-            var sortBy = new SortByExtension();
-            var creatingData = sortBy.CreatingDataSortedByFileSize(path,expansion);
-            sortBy.OutputSortedFiles(creatingData);
+            var sortBy = new FileHandler();
+            var creatingData = sortBy.CreatDataSortedByFileSize(path,extansion);
+            sortBy.Print(creatingData);
             
             Console.ReadLine();
         }
