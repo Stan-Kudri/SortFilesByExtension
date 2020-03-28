@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using SortFilesByExtension.PrintFolder;
 
 namespace FileHandler
 {
@@ -18,8 +19,11 @@ namespace FileHandler
 
             var sortBy = new FileHandler();
             var creatingData = sortBy.CreatDataSortedByFileSize(path,extansion);
-            sortBy.Print(creatingData);
-            
+            Console.WriteLine("Выдача информации в консоли или сохранение в текстовом документе SortedNames.txt в папке по желанию:");
+            var print = new PrintToConsole();
+            //var print = new PrintToFile($@"X:");
+            sortBy.Print(creatingData, print);
+
             Console.ReadLine();
         }
     }

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using SortFilesByExtension;
+using SortFilesByExtension.PrintFolder;
+using SortFilesByExtension.Abstraction;
 
 namespace FileHandler
 {    
@@ -38,6 +40,7 @@ namespace FileHandler
 
         public string[] CreatDataSortedByFileSize(string path,string extansion)
         {
+            
             ThrowIfInvalidPath(path);
 
             List<FileMetadata> fileMetadatas = new List<FileMetadata>();
@@ -46,20 +49,19 @@ namespace FileHandler
             {
                 var fileInfo = new FileInfo(files);
                 fileMetadatas.Add(new FileMetadata(fileInfo.Name,fileInfo.Length));
-                Console.WriteLine($"{fileInfo.Name} => {fileInfo.Length}");
+                Console.Write($"{fileInfo.Name} => {fileInfo.Length}");
+                Console.Write(Environment.NewLine);
+                
             }
 
             return fileMetadatas.OrderBy(x => x.Length).Select(x => x.Name).ToArray();                                  
         }
 
-        public void Print(string[] SortedNames)
+        public void Print(string[] SortedNames,IPrint print)
         {
-            ThrowIfNull(SortedNames);
-            Console.WriteLine("\nОтсортированные Элементы:");
-            foreach (var files in SortedNames)
-            {
-                Console.WriteLine($"{files}");
-            }
+            ThrowIfNull(SortedNames);            
+            foreach(var line in SortedNames)
+                print.Print(line);
         }
 
     }
