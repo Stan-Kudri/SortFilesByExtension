@@ -25,9 +25,7 @@ namespace FileHandler
             //var print = new PrintToConsole();
             //Console.WriteLine("\nОтсортированные Элементы:");
 
-            string wey = @"X:\\";
-            string nameFile = "SortedNames.txt";
-            string pathFile = Path.Combine(wey, nameFile);
+            string pathFile = Path.Combine(@"X:\\", "SortedNames.txt");
             var print = new PrintToFile(pathFile,PrintToFile.CreateAction.DeleteExistFile);
             Console.WriteLine($"\nПуть файла с отсортированными элементами: {pathFile}");
 

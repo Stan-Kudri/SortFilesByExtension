@@ -16,22 +16,13 @@ namespace SortFilesByExtension.PrintFolder
             Nothing,
             DeleteExistFile,
         };
-
-        private void ThrowIfInvalidPath(string path)
-        {
-            if (!File.Exists(path))
-            {
-                throw new ArgumentException();
-            }
-        }
         
         public PrintToFile(string path, CreateAction createAction)
         {
-            ThrowIfInvalidPath(path);
             _path = path;
             if (createAction == CreateAction.DeleteExistFile)
             {
-                File.Create(_path).Dispose();
+                using (File.CreateText(_path)) { }
             }            
         }
 
