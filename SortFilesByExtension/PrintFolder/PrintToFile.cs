@@ -11,21 +11,28 @@ namespace SortFilesByExtension.PrintFolder
     class PrintToFile:IPrint
     {
         private string _path { get;}
+        public enum CreateAction
+        {
+            Nothing,
+            DeleteExistFile,
+        };
 
         private void ThrowIfInvalidPath(string path)
         {
-            if (!Directory.Exists(path))
+            if (!File.Exists(path))
             {
                 throw new ArgumentException();
             }
         }
-
-        public PrintToFile(string path)
+        
+        public PrintToFile(string path, CreateAction createAction)
         {
             ThrowIfInvalidPath(path);
-            _path = $@"{path}\SortedNames.txt";
-            File.Create(_path).Close();
-            Console.WriteLine($"\nПуть файла с отсортированными элементами: {_path}");
+            _path = path;
+            if (createAction == CreateAction.DeleteExistFile)
+            {
+                File.Create(_path).Dispose();
+            }            
         }
 
         public void Print(string line)

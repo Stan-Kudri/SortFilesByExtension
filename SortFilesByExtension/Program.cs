@@ -19,9 +19,19 @@ namespace FileHandler
 
             var sortBy = new FileHandler();
             var creatingData = sortBy.CreatDataSortedByFileSize(path,extansion);
+
             Console.WriteLine("Выдача информации в консоли или сохранение в текстовом документе SortedNames.txt в папке по желанию:");
-            var print = new PrintToConsole();
-            //var print = new PrintToFile($@"X:");
+
+            //var print = new PrintToConsole();
+            //Console.WriteLine("\nОтсортированные Элементы:");
+
+            string wey = @"X:\\";
+            string nameFile = "SortedNames.txt";
+            string pathFile = Path.Combine(wey, nameFile);
+            var print = new PrintToFile(pathFile,PrintToFile.CreateAction.DeleteExistFile);
+            Console.WriteLine($"\nПуть файла с отсортированными элементами: {pathFile}");
+
+
             sortBy.Print(creatingData, print);
 
             Console.ReadLine();
